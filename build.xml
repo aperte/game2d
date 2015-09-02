@@ -1,0 +1,50 @@
+<project name="Game2D" default="compile" basedir=".">
+    <description>
+        A game for nerds by nerds.
+    </description>
+
+    <property name="src" location="src" />
+    <property name="build" location="build" />
+    <property name="gfx" value="gfx" />
+    <property name="sfx" value="sfx" />
+    <property name="maps" value="maps" />
+    <property name="config" value="config.properties" />
+    <property name="jarfile" value="game2d.jar" />
+    <!--
+    <property name="dist" location="dist" />
+    -->
+    <property name="dist" value="${jarfile}" />
+
+    <target name="init">
+        <tstamp />
+        <mkdir dir="${build}" />
+        <copy todir="${build}">
+            <fileset dir="." includes="${gfx}/**" />
+            <fileset dir="." includes="${sfx}/**" />
+            <fileset dir="." includes="${maps}/**" />
+        </copy>
+        <copy file="${config}" tofile="${build}/${config}" />
+    </target>
+
+    <target name="compile" depends="init" description="compiles game2d">
+        <javac srcdir="${src}" destdir="${build}" />
+    </target>
+
+    <target name="dist" depends="compile"
+        description="creates a jar file ready for distribution">
+        <jar destfile="${jarfile}"
+            basedir="${build}">
+            <manifest>
+                <attribute name="Main-Class"
+                    value="game2d.GameWindow" />
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="clean"
+        description="cleans up clutter">
+        <delete dir="${build}" />
+        <delete file="${dist}" />
+    </target>
+</project>
+
