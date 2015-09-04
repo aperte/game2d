@@ -188,7 +188,9 @@ public class CharStats {
 		if(current_weapon != null){
 			attack_damage -= current_weapon.getDamage();
 		}
-		current_weapon = W;
+		if(W != null){
+			current_weapon = W;
+		}
 		attack_damage += current_weapon.getDamage();
 
 		System.out.println("You're now equipping " + current_weapon.getName());
