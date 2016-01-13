@@ -6,6 +6,9 @@ import game2d.SoundController;
 import game2d.shapes.Point;
 import game2d.shapes.Rectangle;
 import game2d.shapes.Triangle;
+
+import java.util.ArrayList;
+
 import javafx.scene.input.KeyCode;
 
 public class Player extends NPC{
@@ -16,6 +19,8 @@ public class Player extends NPC{
 	private int attack_delay = 0;
 	/**related to attack moves*/
 	private char facing;
+
+	private int check_for_items_cooldown = 0;
 
 	public char getFacing(){ return facing; }
 
@@ -82,10 +87,10 @@ public class Player extends NPC{
 		charStats = CS;
 		charStats.setToPlayer();
 		sharedDataLists = SDL;
-		
-		
-		charStats.obtainWeapon(sharedDataLists.gameItems.getWeaponIndex(0));
-		charStats.obtainWeapon(sharedDataLists.gameItems.getWeaponIndex(1));
+
+
+		charStats.obtainWeapon(sharedDataLists.gameItems.getWeaponIndex(0), this);
+		charStats.obtainWeapon(sharedDataLists.gameItems.getWeaponIndex(1), this);
 		charStats.equipWeapon('1');
 
 		Point p = sharedDataLists.map_list[sharedDataLists.map_index].player_starting_coords;
@@ -191,6 +196,7 @@ public class Player extends NPC{
 	@SuppressWarnings("incomplete-switch")
 	@Override
 	public void movement(KeyCode key) {
+		check_for_items_cooldown--;
 		if (key == null){
 			if(attack_delay == 0)
 				setCurrentActionImage(ActionImage.STANDING);	
@@ -201,7 +207,7 @@ public class Player extends NPC{
 		int hill_tolerance;
 		MapNode[][] MN = sharedDataLists.map_list[sharedDataLists.map_index].map;
 		if(attack_delay == 0)
-		setCurrentActionImage(ActionImage.WALKING);
+			setCurrentActionImage(ActionImage.WALKING);
 
 		switch(key){
 		case A:
@@ -279,15 +285,25 @@ public class Player extends NPC{
 				|| MN[shape.y + (height / 2)][shape.x - 5].type == 'P')
 			sharedDataLists.new_level();
 	}
-	
+
 	public void checkForItems(KeyCode key){
-		if(key == KeyCode.E || charStats.isWeaponSlotAvailable()){
+		if(key == KeyCode.E && check_for_items_cooldown <= 0){
 			searchForItemsAroundActor();
+			check_for_items_cooldown = 10;
 		}
 	}
-	
+
 	private void searchForItemsAroundActor(){
-		sharedDataLists.getDroppedWeaponsList();
+		ArrayList<DroppedWeaponPackage> dwp_list = sharedDataLists.getDroppedWeaponsList();
+		for (DroppedWeaponPackage dwp : dwp_list) {
+			if(Math.abs(dwp.getX() - shape.x) <= 15){
+				if(Math.abs(dwp.getY() - shape.y) <= 15){
+					charStats.obtainWeapon(dwp.getWeapon(), this);
+					sharedDataLists.removeWeaponDrop(dwp);
+					break;
+				}
+			}
+		}
 	}
 
 

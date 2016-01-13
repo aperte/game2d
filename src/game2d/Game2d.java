@@ -234,7 +234,7 @@ public class Game2d {
 			iv = spriteSheet.grabImage(seq.remove(0));
 			root.getChildren().add(iv);
 			iv.setTranslateY(Actor.shape.y - Actor.yCoord() -25);
-			
+			//iv.setRotate(50);
 			iv.setFitWidth(64);
 			iv.setFitHeight(64);
 			if(Actor.getFacing() == 'd'){//right
@@ -270,11 +270,12 @@ public class Game2d {
 	/* Method called once every frame. Performance! */
 	private void tick() {
 		//Actor actions:
-		Actor.movement(Listener.get_moveKey());
-		Actor.gravity(Listener.get_otherKey());
-		Actor.checkForItems(Listener.get_otherKey());
-		Actor.actions(Listener.get_otherKey());
+		Actor.movement(Listener.getMoveKey());
+		Actor.gravity(Listener.getOtherKey());
+		Actor.checkForItems(Listener.getOtherKey());
+		Actor.actions(Listener.getOtherKey());
 		Actor.buffDurations();
+		Listener.resetOtherKey();
 		//System.out.println("x coords: " + Actor.x_coord);
 		//System.out.println("shape x: " + Actor.shape.x);
 		//

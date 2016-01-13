@@ -1,5 +1,6 @@
 package game2d.charmechanics;
 
+import game2d.SharedDataLists;
 import game2d.SoundController;
 
 import java.util.ArrayList;
@@ -81,9 +82,9 @@ public class CharStats {
 
 	}
 
-	private void setEquipmentDrop(Equipment equipment){
+	/*	private void setEquipmentDrop(Equipment equipment){
 
-	}
+	}*/
 
 	/**Percentage based hit, not effected by armor.*/
 	public void fallingDamage(int stacked_velocity){
@@ -125,31 +126,32 @@ public class CharStats {
 		CS.takingDamage(this);
 	}
 
-	public boolean isWeaponSlotAvailable(){
+	private boolean isWeaponSlotAvailable(){
 		return weapons.size() < weapon_limit;
 	}
-	
-	/**Fill an empty weapon slot.*/
-	public void obtainWeapon(Weapon W){
-		//System.out.println("CHECK");
-		if(!weapons.contains(W)){//amount of weapons limit
-			weapons.add(W);
-		}
-	}
 
-	public void replaceCurrentWeapon(){
-		//TODO
-	}
-	
-	public void dropCurrentWeapon(){
-		//TODO
+	/**Fill an empty weapon slot.*/
+	public void obtainWeapon(Weapon wep, NPC npc){
+		//System.out.println("CHECK");
+		//if(!weapons.contains(wep)){//block duplications TODO fix comparable
+			if(isWeaponSlotAvailable())
+				weapons.add(wep);
+			else{
+				npc.sharedDataLists.addWeaponDrop(npc, current_weapon);
+				
+				attack_damage -= current_weapon.getDamage();
+				current_weapon = wep;
+				attack_damage += current_weapon.getDamage();
+				weapons.set(weapon_index, current_weapon);
+			}
+		//}
 	}
 
 	/**Throw current weapon and replace with one on the ground.*/
-	public void switchWeapon(Weapon W){
+	private void switchWeapon(Weapon wep){
 		attack_damage -= current_weapon.getDamage();
 
-		current_weapon = W; //current weapon switched
+		current_weapon = wep; //current weapon switched
 		attack_damage += current_weapon.getDamage();
 		weapons.set(weapon_index, current_weapon);
 

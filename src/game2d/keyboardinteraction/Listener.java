@@ -6,7 +6,6 @@ import javafx.scene.input.KeyEvent;
 
 import java.util.HashMap;
 
-@SuppressWarnings("restriction")
 public class Listener {
 	private static KeyCode moveKey;
 	private static KeyCode otherKey;
@@ -20,12 +19,16 @@ public class Listener {
 		isHolding = false;
 	}
 
-	public static KeyCode get_moveKey(){
+	public static KeyCode getMoveKey(){
 		return moveKey;
 	}
 
-	public static KeyCode get_otherKey(){
+	public static KeyCode getOtherKey(){
 		return otherKey;
+	}
+	
+	public static void resetOtherKey(){
+		otherKey = null;
 	}
 
 	public static void keyPressed(KeyEvent e) {

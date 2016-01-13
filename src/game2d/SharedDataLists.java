@@ -93,14 +93,20 @@ public class SharedDataLists {
 		dropped_weapons.add(DWP);
 		//TODO sort
 	}
+	
+	public void removeWeaponDrop(DroppedWeaponPackage weaponPackageToRemove){
+		dropped_weapons.remove(weaponPackageToRemove);
+	}
 
+	public ArrayList<DroppedWeaponPackage> getDroppedWeaponsList(){
+		return dropped_weapons;
+	}
+	
 	public void addEquipmentDrop(NPC npc, Equipment equipment){
 		//TODO
 	}
 	
-	public ArrayList<DroppedWeaponPackage> getDroppedWeaponsList(){
-		return dropped_weapons;
-	}
+	
 	
 	/*public ArrayList<DroppedEquipmentPackage> getDroppedEquipmentList(){
 		return dropped_equipment; TODO

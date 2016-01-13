@@ -9,7 +9,7 @@ public class DroppedWeaponPackage{//TODO make abstract class for items
 	private int y_coord;
 	private Point image;
 
-	//to make get the weapon to float... feel free to be more creative!!!
+	//to get the weapon to float... feel free to be more creative!!!
 	private int[] y_pos = {0,2,4,6,4,2,0,-2,-4,-6,-4,-2};
 	private int i = 0;
 
